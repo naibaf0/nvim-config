@@ -36,7 +36,6 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 "Plug 'fatih/vim-go', { 'for': 'go', 'tag': '*' }
 Plug 'fatih/vim-go', { 'for': 'go' }
-Plug 'ncm2/ncm2-jedi'
 Plug 'ncm2/ncm2-html-subscope'
 Plug 'lervag/vimtex', { 'for': 'tex'}
 " Text Filtering/Alignment | Markdown
@@ -744,6 +743,7 @@ let g:LanguageClient_serverCommands = {
     \ 'cpp': ['clangd'],
     \ 'go': ['gopls'],
     \ 'java': ['/usr/bin/jdtls', '-data', getcwd()],
+    \ 'python': ['/usr/bin/pyls'],
     \ }
 
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
@@ -767,7 +767,7 @@ endfunction()
 
 augroup LSP
   autocmd!
-  autocmd FileType cpp,c call SetLSPShortcuts()
+  autocmd FileType cpp,c,java,python call SetLSPShortcuts()
 augroup END
 
 " Always draw the signcolumn.
