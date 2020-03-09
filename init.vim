@@ -740,9 +740,10 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 set hidden
 
 let g:LanguageClient_serverCommands = {
-    \ 'go': ['gopls'],
     \ 'c': ['clangd'],
     \ 'cpp': ['clangd'],
+    \ 'go': ['gopls'],
+    \ 'java': ['/usr/bin/jdtls', '-data', getcwd()],
     \ }
 
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
