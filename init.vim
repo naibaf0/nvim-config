@@ -647,8 +647,8 @@ set shortmess+=c
 " enable deoplete
 let g:deoplete#enable_at_startup = 1
 " Use smartcase.
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#auto_completion_start_length = 3
+call deoplete#custom#option('smart_case', v:true)
+call deoplete#custom#option('auto_complete_delay', 50)
 
 call deoplete#custom#var('omni', 'input_patterns', {
         \ 'tex': g:vimtex#re#deoplete
