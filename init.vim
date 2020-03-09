@@ -650,9 +650,9 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#auto_completion_start_length = 3
 
-let g:deoplete#sources = {}
-let g:deoplete#omni#input_patterns = {}
-let g:deoplete#omni#functions = {}
+call deoplete#custom#var('omni', 'input_patterns', {
+        \ 'tex': g:vimtex#re#deoplete
+        \})
 
 call deoplete#custom#source('_', 'converters',
   \ ['converter_auto_paren', 'converter_remove_overlap', 'converter_truncate_abbr', 'converter_truncate_menu'])
@@ -774,17 +774,7 @@ au FileType go nmap <localleader>e <Plug>(go-rename)
 au FileType go nmap <localleader>rt <Plug>(go-run-tab)
 
 " {{{2 LaTeX
-" """"""""""
-let g:deoplete#omni#input_patterns.tex = '\\(?:'
-      \ .  '\w*cite\w*(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
-      \ . '|\w*ref(?:\s*\{[^}]*|range\s*\{[^,}]*(?:}{)?)'
-      \ . '|hyperref\s*\[[^]]*'
-      \ . '|includegraphics\*?(?:\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-      \ . '|(?:include(?:only)?|input)\s*\{[^}]*'
-      \ . '|\w*(gls|Gls|GLS)(pl)?\w*(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-      \ . '|includepdf(\s*\[[^]]*\])?\s*\{[^}]*'
-      \ . '|includestandalone(\s*\[[^]]*\])?\s*\{[^}]*'
-\ .')'
+""""""""""""
 
 au FileType tex nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
 
