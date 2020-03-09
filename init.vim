@@ -34,8 +34,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
-"Plug 'fatih/vim-go', { 'for': 'go', 'tag': '*' }
-Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'fatih/vim-go', { 'for': 'go', 'tag': '*' }
 Plug 'ncm2/ncm2-html-subscope'
 Plug 'lervag/vimtex', { 'for': 'tex'}
 " Text Filtering/Alignment | Markdown
