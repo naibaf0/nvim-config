@@ -20,22 +20,18 @@ Plug 'junegunn/fzf.vim'
 " Multiple Cursors (like sublime)
 Plug 'terryma/vim-multiple-cursors'
 " Autocompletion
-Plug 'ncm2/ncm2'
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
-Plug 'fgrsnau/ncm2-aspell'
-Plug 'ncm2/ncm2-syntax' | Plug 'Shougo/neco-syntax'
-Plug 'ncm2/ncm2-neoinclude' | Plug 'Shougo/neoinclude.vim'
-Plug 'ncm2/ncm2-neosnippet' | Plug 'Shougo/neosnippet' | Plug 'Shougo/neosnippet-snippets' | Plug 'honza/vim-snippets'
-Plug 'ncm2/ncm2-markdown-subscope'
+Plug 'Shougo/deoplete.nvim', { 'tag': '*', 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/neoinclude.vim'
+Plug 'Shougo/neopairs.vim'
+Plug 'Shougo/neco-syntax'
+Plug 'Shougo/context_filetype.vim'
 Plug 'Shougo/echodoc.vim'
+Plug 'Shougo/neosnippet' | Plug 'Shougo/neosnippet-snippets' | Plug 'honza/vim-snippets'
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
 Plug 'fatih/vim-go', { 'for': 'go', 'tag': '*' }
-Plug 'ncm2/ncm2-html-subscope'
 Plug 'lervag/vimtex', { 'for': 'tex'}
 " Text Filtering/Alignment | Markdown
 Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
@@ -637,105 +633,55 @@ function! Multiple_cursors_after()
     call ncm2#unlock('vim-multiple-cursors')
   endfunction
 
-" {{{2 ncm2
-""""""""""""
-" enable ncm2 for all buffers
-augroup my_cm_setup
-  au!
-  au BufEnter * call ncm2#enable_for_buffer()
-  au Filetype tex call ncm2#register_source({
-          \ 'name' : 'vimtex-cmds',
-          \ 'priority': 8, 
-          \ 'complete_length': -1,
-          \ 'scope': ['tex'],
-          \ 'matcher': {'name': 'prefix', 'key': 'word'},
-          \ 'word_pattern': '\w+',
-          \ 'complete_pattern': g:vimtex#re#ncm2#cmds,
-          \ 'on_complete': ['ncm2#on_complete#omni', 'vimtex#complete#omnifunc'],
-          \ })
-  au Filetype tex call ncm2#register_source({
-          \ 'name' : 'vimtex-labels',
-          \ 'priority': 8, 
-          \ 'complete_length': -1,
-          \ 'scope': ['tex'],
-          \ 'matcher': {'name': 'combine',
-          \             'matchers': [
-          \               {'name': 'substr', 'key': 'word'},
-          \               {'name': 'substr', 'key': 'menu'},
-          \             ]},
-          \ 'word_pattern': '\w+',
-          \ 'complete_pattern': g:vimtex#re#ncm2#labels,
-          \ 'on_complete': ['ncm2#on_complete#omni', 'vimtex#complete#omnifunc'],
-          \ })
-  au Filetype tex call ncm2#register_source({
-          \ 'name' : 'vimtex-files',
-          \ 'priority': 8, 
-          \ 'complete_length': -1,
-          \ 'scope': ['tex'],
-          \ 'matcher': {'name': 'combine',
-          \             'matchers': [
-          \               {'name': 'abbrfuzzy', 'key': 'word'},
-          \               {'name': 'abbrfuzzy', 'key': 'abbr'},
-          \             ]},
-          \ 'word_pattern': '\w+',
-          \ 'complete_pattern': g:vimtex#re#ncm2#files,
-          \ 'on_complete': ['ncm2#on_complete#omni', 'vimtex#complete#omnifunc'],
-          \ })
-  au Filetype tex call ncm2#register_source({
-          \ 'name' : 'bibtex',
-          \ 'priority': 8, 
-          \ 'complete_length': -1,
-          \ 'scope': ['tex'],
-          \ 'matcher': {'name': 'combine',
-          \             'matchers': [
-          \               {'name': 'prefix', 'key': 'word'},
-          \               {'name': 'abbrfuzzy', 'key': 'abbr'},
-          \               {'name': 'abbrfuzzy', 'key': 'menu'},
-          \             ]},
-          \ 'word_pattern': '\w+',
-          \ 'complete_pattern': g:vimtex#re#ncm2#bibtex,
-          \ 'on_complete': ['ncm2#on_complete#omni', 'vimtex#complete#omnifunc'],
-          \ })
-  au User Ncm2Plugin call ncm2#register_source({
-          \ 'name' : 'css',
-          \ 'priority': 9,
-          \ 'subscope_enable': 1,
-          \ 'scope': ['css','scss'],
-          \ 'mark': 'css',
-          \ 'word_pattern': '[\w\-]+',
-          \ 'complete_pattern': ':\s*',
-          \ 'on_complete': ['ncm2#on_complete#delay', 180,
-                           \ 'ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
-          \ })
-augroup END
-
-
-" IMPORTANT: :help Ncm2PopupOpen for more information
-set completeopt=noinsert,menuone,noselect
-
+" {{{2 deoplete
+"""""""""""""""
+" neocomplete like
+set completeopt+=noinsert
+" deoplete.nvim recommend
+set completeopt+=noselect
 " restrict height of completion popup
 set pumheight=20
-
 " suppress the annoying 'match x of y', 'The only match' and 'Pattern not
 " found' messages
 set shortmess+=c
+" enable deoplete
+let g:deoplete#enable_at_startup = 1
+" Use smartcase.
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#auto_completion_start_length = 3
 
-" CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
-inoremap <c-c> <ESC>
+let g:deoplete#sources = {}
+let g:deoplete#omni#input_patterns = {}
+let g:deoplete#omni#functions = {}
 
-" When the <Enter> key is pressed while the popup menu is visible, it only
-" hides the menu. Use this mapping to close the menu and also start a new
-" line.
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+call deoplete#custom#source('_', 'converters',
+  \ ['converter_auto_paren', 'converter_remove_overlap', 'converter_truncate_abbr', 'converter_truncate_menu'])
 
-" Use <TAB> to select the popup menu:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" Recommended key-mappings.
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function() abort
+  return deoplete#close_popup() . "\<CR>"
+endfunction
+inoremap <expr><C-g> deoplete#undo_completion()
+
+" close preview window after completion
+autocmd CompleteDone * pclose!
 
 " {{{2 LanguageClient-neovim
 """"""""""""""""""""""""""""
 " Required for operations modifying multiple buffers like rename.
 set hidden
+
+call deoplete#custom#source('LanguageClient',
+            \ 'min_pattern_length',
+            \ 2)
 
 let g:LanguageClient_serverCommands = {
     \ 'c': ['clangd'],
@@ -829,6 +775,17 @@ au FileType go nmap <localleader>rt <Plug>(go-run-tab)
 
 " {{{2 LaTeX
 " """"""""""
+let g:deoplete#omni#input_patterns.tex = '\\(?:'
+      \ .  '\w*cite\w*(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
+      \ . '|\w*ref(?:\s*\{[^}]*|range\s*\{[^,}]*(?:}{)?)'
+      \ . '|hyperref\s*\[[^]]*'
+      \ . '|includegraphics\*?(?:\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+      \ . '|(?:include(?:only)?|input)\s*\{[^}]*'
+      \ . '|\w*(gls|Gls|GLS)(pl)?\w*(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+      \ . '|includepdf(\s*\[[^]]*\])?\s*\{[^}]*'
+      \ . '|includestandalone(\s*\[[^]]*\])?\s*\{[^}]*'
+\ .')'
+
 au FileType tex nnoremap <localleader>lt :call vimtex#fzf#run()<cr>
 
 let g:tex_flavor='latex'
