@@ -17,20 +17,20 @@ if has('mac')
   Plug '/usr/local/opt/fzf'
 endif
 Plug 'junegunn/fzf.vim'
-" Multiple Cursors (like sublime)
-Plug 'terryma/vim-multiple-cursors'
 " Autocompletion
 Plug 'Shougo/deoplete.nvim', { 'tag': '*', 'do': ':UpdateRemotePlugins' }
+Plug 'ncm2/float-preview.nvim'
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/neopairs.vim'
 Plug 'Shougo/neco-syntax'
-Plug 'Shougo/context_filetype.vim'
 Plug 'Shougo/echodoc.vim'
+Plug 'Shougo/context_filetype.vim'
 Plug 'Shougo/neosnippet' | Plug 'Shougo/neosnippet-snippets' | Plug 'honza/vim-snippets'
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
+
 Plug 'fatih/vim-go', { 'for': 'go', 'tag': '*' }
 Plug 'lervag/vimtex', { 'for': 'tex'}
 " Text Filtering/Alignment | Markdown
@@ -71,7 +71,7 @@ set termguicolors
 set encoding=utf8
 
 " Set the height of the command bar
-set cmdheight=1
+set cmdheight=2
 
 " Always show the status line
 set laststatus=2
@@ -240,7 +240,7 @@ augroup save
   au!
   au FocusLost * wall
 augroup END
-set nohidden
+"set nohidden
 set nobackup
 set noswapfile
 set nowritebackup
@@ -622,23 +622,13 @@ if has('unix')
   endif
 endif
 
-" {{{2 Multiple Cursors
-"""""""""""""""""""""""
-" disable autocomplete when using multiple cursors
-function! Multiple_cursors_before()
-    call ncm2#lock('vim-multiple-cursors')
-endfunction
-
-function! Multiple_cursors_after()
-    call ncm2#unlock('vim-multiple-cursors')
-  endfunction
-
 " {{{2 deoplete
 """""""""""""""
 " neocomplete like
 set completeopt+=noinsert
 " deoplete.nvim recommend
 set completeopt+=noselect
+set completeopt-=preview
 " restrict height of completion popup
 set pumheight=20
 " suppress the annoying 'match x of y', 'The only match' and 'Pattern not
@@ -655,7 +645,7 @@ call deoplete#custom#var('omni', 'input_patterns', {
         \})
 
 call deoplete#custom#source('_', 'converters',
-  \ ['converter_auto_paren', 'converter_remove_overlap', 'converter_truncate_abbr', 'converter_truncate_menu'])
+  \ ['converter_auto_paren', 'converter_remove_overlap', 'converter_truncate_menu'])
 
 " Recommended key-mappings.
 " <TAB>: completion.
@@ -679,23 +669,15 @@ autocmd CompleteDone * pclose!
 " Required for operations modifying multiple buffers like rename.
 set hidden
 
-call deoplete#custom#source('LanguageClient',
-            \ 'min_pattern_length',
-            \ 2)
+let g:LanguageClient_settingsPath = "~/.config/nvim/settings.json"
 
 let g:LanguageClient_serverCommands = {
-    \ 'c': ['clangd'],
-    \ 'cpp': ['clangd'],
+    \ 'c': ['clangd', '-background-index'],
+    \ 'cpp': ['clangd', '-background-index'],
     \ 'go': ['gopls'],
     \ 'java': ['/usr/bin/jdtls', '-data', getcwd()],
-    \ 'python': ['/usr/bin/pyls'],
+    \ 'python': ['/usr/bin/pyls', '-vv', '--log-file', '~/pyls.log'],
     \ }
-
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-" Or map each action separately
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-"nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 function SetLSPShortcuts()
   nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
@@ -703,11 +685,11 @@ function SetLSPShortcuts()
   nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
   nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
   nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
-  nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
+  nnoremap <leader>la :call LanguageClient#workspace_applyEdit()<CR>
   nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
   nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
-  nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
-  nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
+  nnoremap <leader>ls :call LanguageClient#textDocument_documentSymbol()<CR>
+  nnoremap <leader>lm :call LanguageClient#contextMenu()<CR>
 endfunction()
 
 augroup LSP
@@ -718,12 +700,16 @@ augroup END
 " Always draw the signcolumn.
 set signcolumn=yes
 
+let g:float_preview#docked = 1
+
+" {{{2 neopairs
+""""""""""""""
+let g:neopairs#enable = 1
+
 " {{{2 echodoc
 """"""""""""""
-set cmdheight=2
 let g:echodoc#enable_at_startup = 1
-let g:echodoc#type = 'signature'
-
+let g:echodoc#type = 'echo'
 " {{{2 neosnippet
 """""""""""""""""
 "use vim-snippets as well
