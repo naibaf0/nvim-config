@@ -18,7 +18,8 @@ if has('mac')
 endif
 Plug 'junegunn/fzf.vim'
 " Autocompletion
-Plug 'Shougo/deoplete.nvim', { 'tag': '*', 'do': ':UpdateRemotePlugins' }
+"Plug 'Shougo/deoplete.nvim', { 'tag': '*', 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'ncm2/float-preview.nvim'
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/neopairs.vim'
@@ -66,6 +67,9 @@ let g:dracula_colorterm=0
 colorscheme dracula
 " Force GUI colors in terminals
 set termguicolors
+
+" Lets vim set the terminal title
+set title
 
 " Set the standard encoding
 set encoding=utf8
