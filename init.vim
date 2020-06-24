@@ -648,8 +648,8 @@ call deoplete#custom#var('omni', 'input_patterns', {
         \ 'tex': g:vimtex#re#deoplete
         \})
 
-call deoplete#custom#source('_', 'converters',
-  \ ['converter_auto_paren', 'converter_remove_overlap', 'converter_truncate_menu'])
+"call deoplete#custom#source('_', 'converters',
+  "\ ['converter_auto_paren', 'converter_remove_overlap', 'converter_truncate_menu'])
 
 " Recommended key-mappings.
 " <TAB>: completion.
@@ -679,7 +679,6 @@ let g:LanguageClient_serverCommands = {
     \ 'c': ['clangd', '-background-index'],
     \ 'cpp': ['clangd', '-background-index'],
     \ 'go': ['gopls'],
-    \ 'java': ['/usr/bin/jdtls', '-data', getcwd()],
     \ 'python': ['/usr/bin/pyls', '-vv', '--log-file', '~/pyls.log'],
     \ }
 
@@ -698,7 +697,7 @@ endfunction()
 
 augroup LSP
   autocmd!
-  autocmd FileType cpp,c,java,python call SetLSPShortcuts()
+  autocmd FileType cpp,c,python call SetLSPShortcuts()
 augroup END
 
 " Always draw the signcolumn.
@@ -729,17 +728,13 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 " \ pumvisible() ? "\<C-n>" :
 " \ neosnippet#expandable_or_jumpable() ?
 " \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-"smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-"\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
 " For conceal markers.
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
-
-" Press enter key to trigger snippet expansion
-" The parameters are the same as `:help feedkeys()`
-"inoremap <silent> <expr> <CR> ncm2_neosnippet#expand_or("\<CR>", 'n')
 
 " {{{2 Go
 """""""""
