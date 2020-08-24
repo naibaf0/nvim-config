@@ -33,7 +33,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 
 Plug 'fatih/vim-go', { 'for': 'go', 'tag': '*' }
-Plug 'lervag/vimtex', { 'for': 'tex'}
+Plug 'lervag/vimtex'
 " Text Filtering/Alignment | Markdown
 Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
 " Linting 
