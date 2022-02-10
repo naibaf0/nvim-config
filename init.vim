@@ -430,8 +430,8 @@ nnoremap <silent><special> <F7> :UndotreeToggle<CR>
 nnoremap <silent><special> <F8> :TagbarToggle<CR>
 
 " comment/uncomment with <C-c> in normal and visual mode
-nmap <silent> <C-c> :call NERDComment(0, "toggle")<CR>
-vmap <silent> <C-c> :call NERDComment(1, "toggle")<CR>
+nmap <silent> <C-c> :call nerdcommenter#Comment(0, "toggle")<CR>
+vmap <silent> <C-c> :call nerdcommenter#Comment(1, "toggle")<CR>
 
 " Pressing * or # in visual mode searches for the current selection
 vnoremap <silent> * :call SelectionSearch('b')<CR>
