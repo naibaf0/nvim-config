@@ -14,16 +14,16 @@ function M.setup()
         }, { prefix = '<Leader>' })
     end
 
+    -- Toggle Vim Spellcheck and the language
     vim.keymap.set('n', '<F2>', function()
         vim.opt.spell = not vim.o.spell
     end)
-    -- not working at the moment
     vim.keymap.set('n', '<F3>', function()
-        if vim.opt.spelllang == "en_gb" then
-            vim.opt.spelllang=de_de
+        if vim.bo.spelllang == "en_GB" then
+            vim.bo.spelllang="de_DE"
             print("spelllang DE")
         else
-            vim.opt.spelllang=en_gb
+            vim.bo.spelllang="en_GB"
             print("spelllang EN")
         end
     end)
