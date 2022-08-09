@@ -105,4 +105,25 @@ local M = {}
         end, 3)
     end
 
+    vim.g.diagnostics_active = true
+    M.toggle_diagnostics = function()
+        if vim.g.diagnostics_active then
+            vim.g.diagnostics_active = false
+            -- vim.lsp.diagnostic.clear(0)
+            -- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
+            vim.diagnostic.disable(0)
+        else
+            vim.g.diagnostics_active = true
+            -- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+            --     vim.lsp.diagnostic.on_publish_diagnostics, {
+            --         virtual_text = false,
+            --         signs = true,
+            --         underline = true,
+            --         update_in_insert = false,
+            --     }
+            -- )
+            vim.diagnostic.enable(0)
+        end
+    end
+
 return M
