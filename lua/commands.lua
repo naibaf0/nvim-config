@@ -13,6 +13,7 @@ function M.setup()
     command('DeleteTrailingWS', utils.delete_trailing_ws, {desc = 'Delete extra whitespace'})
     command('EditMacro', utils.edit_macro, {desc = 'Create/Edit macro in an input'})
     command('AutoIndent', utils.set_autoindent, {desc = 'Guess indentation in all files'})
+    command('DiagnosticsToggle', utils.toggle_diagnostics, {desc = 'Toggle Diagnostics on and off'})
 
     autocmd('TextYankPost', {
       desc = 'highlight text after is copied',
