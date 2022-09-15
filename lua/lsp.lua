@@ -130,7 +130,25 @@ function M.setup()
     }
 
     lspconfig['ltex'].setup{
-        on_attach = on_attach
+        filetypes = { "tex", "bib" },
+        settings = {
+            ltex = {
+                enabled = { "latex", "bibtex", "markdown" },
+                -- language = "en",
+                diagnosticSeverity = "information",
+                sentenceCacheSize = 2000,
+                additionalRules = {
+                    enablePickyRules = true,
+                    motherTongue = "de-DE",
+                },
+                trace = { server = "verbose" },
+                dictionary = {},
+                disabledRules = {},
+                hiddenFalsePositives = {},
+            },
+        },
+        on_attach = on_attach,
+        capabilities = capabilities
     }
 
     -- lspconfig['grammar_guard'].setup{

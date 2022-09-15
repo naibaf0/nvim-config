@@ -417,7 +417,7 @@ function M.setup()
         }),
         sources = {
             { name = 'luasnip', keyword_length = 2 },
-            { name = 'nvim_lsp, keyword_length = 3' },
+            { name = 'nvim_lsp', keyword_length = 3 },
             { name = 'path' },
             { name = 'buffer', keyword_length = 3 }
         }
