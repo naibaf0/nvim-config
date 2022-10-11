@@ -73,7 +73,7 @@ function M.setup()
     vim.keymap.set('n', '<leader>w', ':Goyo<CR>', { silent = true })
 
     -- Toggle FTerm
-    vim.keymap.set('n', '<A-t>', ':lua require("FTerm").toggle()')
+    vim.keymap.set('n', '<A-t>', ':lua require("FTerm").toggle()<CR>')
     vim.keymap.set('t', '<A-t>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
 
     -- Telescope
