@@ -4,6 +4,7 @@ function M.setup()
 
     -- Define <Leader> for mappings
     vim.g.mapleader = ' '
+    vim.g.maplocalleader = ","
 
     -- When this option is set, the screen will not be redrawn while executing macros, registers and other commands that have not been typed.
     vim.opt.lazyredraw = true

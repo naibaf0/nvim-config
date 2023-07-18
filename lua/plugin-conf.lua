@@ -223,6 +223,7 @@ function M.setup()
             'json',
             'lua',
             'python',
+            'latex',
             'yaml'
         },
     })

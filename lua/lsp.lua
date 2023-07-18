@@ -107,7 +107,7 @@ function M.setup()
             ['cf'] = { function() buf.formatting() end, 'Perform formatting (whole file)' },
         }, { prefix = '<leader>', buffer = bufnr })
 
-        -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
     end
     --}}}---------------------------------------------------------------------------------------------------------------
 
@@ -125,12 +125,21 @@ function M.setup()
     }
 
     lspconfig['gopls'].setup{
+        cmd = {"gopls", "serve"},
+        settings = {
+            gopls = {
+                -- analysis = {
+                --     unusedparams = true,
+                -- },
+                staticcheck = true,
+            },
+        },
         on_attach = on_attach,
         capabilities = capabilities
     }
 
     lspconfig['ltex'].setup{
-        filetypes = { "tex", "bib" },
+        filetypes = { "latex", "tex", "bib", "markdown" },
         settings = {
             ltex = {
                 enabled = { "latex", "bibtex", "markdown" },
@@ -150,28 +159,6 @@ function M.setup()
         on_attach = on_attach,
         capabilities = capabilities
     }
-
-    -- lspconfig['grammar_guard'].setup{
-    --     filetypes = { "tex", "bib" },
-    --     settings = {
-    --         ltex = {
-    --             enabled = { "latex", "tex", "bib", "markdown" },
-    --             language = "en",
-    --             diagnosticSeverity = "information",
-    --             sentenceCacheSize = 2000,
-    --             additionalRules = {
-    --                 enablePickyRules = true,
-    --                 motherTongue = "de-DE",
-    --             },
-    --             trace = { server = "verbose" },
-    --             dictionary = {},
-    --             disabledRules = {},
-    --             hiddenFalsePositives = {},
-    --         },
-    --     },
-    --     on_attach = on_attach,
-    --     capabilities = capabilities
-    -- }
 
     lspconfig['pylsp'].setup{
         settings = {
@@ -193,7 +180,7 @@ function M.setup()
             build = {
               executable = "latexmk",
               args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
-              onSave = true,
+              onSave = false,
               onChange = false
             },
             chktex = {
