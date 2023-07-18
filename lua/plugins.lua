@@ -17,8 +17,8 @@ function M.setup()
 
         -- Plugins -----------------------------------------------------------------------------------------------------
 
-        -- Dracula
-        use 'Mofiqul/dracula.nvim'
+        -- Catppuccin
+        use { "catppuccin/nvim", as = "catppuccin" }
         -- Top and Bottom 
         use { 'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true } }
         use { 'kdheepak/tabline.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true } }

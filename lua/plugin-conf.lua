@@ -2,8 +2,8 @@ local M = { }
 
 function M.setup()
 
-    ----- Dracula Colorscheme {{{---------------------------------------------------------------------------------------
-    vim.cmd[[colorscheme dracula]]
+    ----- Catppuccin Colorscheme {{{---------------------------------------------------------------------------------------
+    vim.cmd[[colorscheme catppuccin-macchiato]]
     --}}}---------------------------------------------------------------------------------------------------------------
 
     ----- Lualine & Tabline {{{---------------------------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ function M.setup()
     require('lualine').setup {
         options = {
         -- ...
-        theme = 'dracula-nvim'
+        theme = 'auto'
         -- ...
         },
         extensions = {
@@ -223,7 +223,6 @@ function M.setup()
             'json',
             'lua',
             'python',
-            'latex',
             'yaml'
         },
     })
