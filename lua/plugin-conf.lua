@@ -2,11 +2,32 @@ local M = { }
 
 function M.setup()
 
-    ----- Catppuccin Colorscheme {{{---------------------------------------------------------------------------------------
-    vim.cmd[[colorscheme catppuccin-macchiato]]
+    ----- Catppuccin Colorscheme {{{------------------------------------------------------------------------------------
+    require("catppuccin").setup({
+        flavour = "mocha", -- latte, frappe, macchiato, mocha
+        transparent_background = false, -- disables setting the background color.
+        show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
+        term_colors = true, -- sets terminal colors (e.g. `g:terminal_color_0`)
+        dim_inactive = {
+            enabled = true, -- dims the background color of inactive window
+            shade = "dark",
+            percentage = 0.15, -- percentage of the shade to apply to the inactive window
+        },
+        integrations = {
+            cmp = true,
+            gitsigns = true,
+            leap = true,
+            lsp_trouble = true,
+            mason = true,
+            nvimtree = true,
+            treesitter = true,
+            which_key = true
+        },
+    })
+    vim.cmd.colorscheme "catppuccin"
     --}}}---------------------------------------------------------------------------------------------------------------
 
-    ----- Lualine & Tabline {{{---------------------------------------------------------------------------------------------------
+    ----- Lualine & Tabline {{{-----------------------------------------------------------------------------------------
     require'tabline'.setup {
       enable = false,
       options = {
@@ -27,9 +48,7 @@ function M.setup()
 
     require('lualine').setup {
         options = {
-        -- ...
-        theme = 'auto'
-        -- ...
+            theme = "catppuccin"
         },
         extensions = {
             'fugitive', 'fzf', 'nvim-tree', 'mundo',-- 'quickfix',
@@ -108,7 +127,7 @@ function M.setup()
     })
     --}}}---------------------------------------------------------------------------------------------------------------
 
-    -- Goyo {{{---------------------------------------------------------------------------------------------------------
+    ----- Goyo {{{------------------------------------------------------------------------------------------------------
 
     local goyogroup = vim.api.nvim_create_augroup('goyo_cmds', {clear = true})
     local autocmd = vim.api.nvim_create_autocmd

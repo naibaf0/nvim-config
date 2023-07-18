@@ -128,6 +128,12 @@ function M.setup()
             requires = { 'neovim/nvim-lspconfig' }
         }
         use { 'ray-x/lsp_signature.nvim' }
+        use {
+            'folke/trouble.nvim',
+            requires = {
+                'kyazdani42/nvim-web-devicons', opt = true -- optional, for file icons
+            },
+        }
         --}}}-----------------------------------------------------------------------------------------------------------
 
         -- Automatically set up your configuration after cloning packer.nvim.  Put this at the end after all plugins.

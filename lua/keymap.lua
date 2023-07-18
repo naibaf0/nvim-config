@@ -93,6 +93,16 @@ function M.setup()
             },
         }, { prefix = 'f' })
     end
+
+    -- Trouble
+    if has_wk then
+        wk.register({
+            name = 'Trouble',
+            ['t'] = { function() require('trouble').toggle() end, 'Toggle Trouble' },
+            ['b'] = { function() require('telescope.builtin').buffers() end, 'Buffers' },
+            ['g'] = { function() require('telescope.builtin').live_grep() end, 'Live Grep' },
+        }, { prefix = 't' })
+    end
     --}}}---------------------------------------------------------------------------------------------------------------
 
 end
