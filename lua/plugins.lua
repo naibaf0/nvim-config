@@ -20,16 +20,17 @@ function M.setup()
         -- Catppuccin
         use { "catppuccin/nvim", as = "catppuccin" }
         -- Top and Bottom 
-        use { 'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true } }
-        use { 'kdheepak/tabline.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true } }
+        use 'nvim-tree/nvim-web-devicons'
+        use { 'nvim-lualine/lualine.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true } }
+        use { 'kdheepak/tabline.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true } }
         -- Git
         use { 'lewis6991/gitsigns.nvim', requires = 'nvim-lua/plenary.nvim' }
         use 'tpope/vim-fugitive'
         -- File Tree
         use {
-            'kyazdani42/nvim-tree.lua',
+            'nvim-tree/nvim-tree.lua',
             requires = {
-                'kyazdani42/nvim-web-devicons', opt = true -- optional, for file icons
+                'nvim-tree/nvim-web-devicons', opt = true -- optional, for file icons
             },
             config = function() require'nvim-tree'.setup() end,
         }
@@ -129,12 +130,7 @@ function M.setup()
             requires = { 'neovim/nvim-lspconfig' }
         }
         use { 'ray-x/lsp_signature.nvim' }
-        use {
-            'folke/trouble.nvim',
-            requires = {
-                'kyazdani42/nvim-web-devicons', opt = true -- optional, for file icons
-            },
-        }
+        use { 'folke/trouble.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true } }
         --}}}-----------------------------------------------------------------------------------------------------------
 
         -- Automatically set up your configuration after cloning packer.nvim.  Put this at the end after all plugins.
