@@ -18,7 +18,8 @@ function M.setup()
         ['??'] = { function() diag.open_float() end, 'Show diagnostic under cursor' },
         ['?j'] = { function() diag.goto_prev() end, 'Goto previous diagnostic' },
         ['?k'] = { function() diag.goto_next() end, 'Goto next diagnostic' },
-        ['<leader>d'] = { function() diag.setloclist() end, 'Show all diagnostics' }
+        -- ['<leader>d'] = { function() diag.setloclist() end, 'Show all diagnostics' }
+        ['<leader>d'] = { function() require("trouble").toggle() end, 'Show all diagnostics' }
     })
 
     local signs = {
