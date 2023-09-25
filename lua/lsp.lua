@@ -144,7 +144,7 @@ function M.setup()
         settings = {
             ltex = {
                 enabled = { "latex", "bibtex", "markdown" },
-                -- language = "en",
+                -- language = "en-US",
                 diagnosticSeverity = "information",
                 sentenceCacheSize = 2000,
                 additionalRules = {
@@ -182,12 +182,17 @@ function M.setup()
         filetypes = { "tex", "bib" },
         settings = {
           texlab = {
+            -- rootDirectory = ".",
             build = {
               executable = "latexmk",
               args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
               onSave = false,
-              onChange = false
+              -- forwardSearchAfter = true,
             },
+            -- forwardSearch = {
+            --   executable = "zathura",
+            --   args = { "--synctex-forward", "%l:1:%f", "%p" },
+            -- },
             chktex = {
                 onOpenAndSave = true,
                 onEdit = true,
