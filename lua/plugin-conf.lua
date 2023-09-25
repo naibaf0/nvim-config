@@ -8,6 +8,7 @@ function M.setup()
         transparent_background = false, -- disables setting the background color.
         show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
         term_colors = true, -- sets terminal colors (e.g. `g:terminal_color_0`)
+        kitty = true, -- workaround for kitty transparency issue: https://github.com/kovidgoyal/kitty/issues/2917
         dim_inactive = {
             enabled = true, -- dims the background color of inactive window
             shade = "dark",
