@@ -140,7 +140,7 @@ function M.setup()
     }
 
     lspconfig['ltex'].setup{
-        filetypes = { "latex", "tex", "bib", "markdown" },
+        filetypes = { "tex", "bib", "markdown" },
         settings = {
             ltex = {
                 enabled = { "latex", "bibtex", "markdown" },
@@ -152,12 +152,16 @@ function M.setup()
                     motherTongue = "de-DE",
                 },
                 trace = { server = "verbose" },
-                dictionary = {},
                 disabledRules = {},
-                hiddenFalsePositives = {},
             },
         },
-        on_attach = on_attach,
+        on_attach = function(client, bufnr)
+            -- rest of your on_attach process.
+            on_attach(client, bufnr)
+            require("ltex_extra").setup { 
+                path = ".ltex"
+            }
+        end,
         capabilities = capabilities
     }
 

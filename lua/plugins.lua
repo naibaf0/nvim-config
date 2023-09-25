@@ -129,6 +129,9 @@ function M.setup()
             'p00f/clangd_extensions.nvim',
             requires = { 'neovim/nvim-lspconfig' }
         }
+        use {
+            'barreiroleo/ltex-extra.nvim',
+        }
         use { 'ray-x/lsp_signature.nvim' }
         use { 'folke/trouble.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true } }
         --}}}-----------------------------------------------------------------------------------------------------------
