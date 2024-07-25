@@ -8,10 +8,10 @@ function M.setup()
     ----- Global mappings {{{-------------------------------------------------------------------------------------------
     -- Select a session
     if has_wk then
-        wk.register({
-            name = 'Sessions',
-            l = { function() require('session_manager').load_session() end, "Load a session" }
-        }, { prefix = '<Leader>' })
+        wk.add({
+            { "<Leader>", group = "Sessions" },
+            { "<Leader>l", function() require('session_manager').load_session() end, desc = "Load a session" },
+        })
     end
 
     -- Toggle Vim Spellcheck and the language
@@ -80,28 +80,26 @@ function M.setup()
     vim.keymap.set('n', '<leader>o',':lua require("utils").project_files()<cr>' , { silent = true })
 
     if has_wk then
-        wk.register({
-            name = 'Telescope',
-            ['f'] = { function() require('telescope.builtin').find_files() end, 'Find file' },
-            ['b'] = { function() require('telescope.builtin').buffers() end, 'Buffers' },
-            ['g'] = { function() require('telescope.builtin').live_grep() end, 'Live Grep' },
-            v = {
-                f = { function() require('telescope.builtin').git_files() end, 'Find file tracked in Git' },
-                b = { function() require('telescope.builtin').git_branches() end, 'Find Git branch' },
-                c = { function() require('telescope.builtin').git_commits() end, 'Find Git commit' },
-                h = { function() require('telescope.builtin').git_bcommits() end, 'Find buffer\'s Git commit (history)' },
-            },
-        }, { prefix = 'f' })
+        wk.add({
+            { "f", group = "Telescope" },
+            { "fb", function() require('telescope.builtin').buffers() end, desc = "Buffers" },
+            { "ff", function() require('telescope.builtin').find_files() end, desc = "Find file" },
+            { "fg", function() require('telescope.builtin').live_grep() end, desc = "Live Grep" },
+            { "fvb", function() require('telescope.builtin').git_branches() end, desc = "Find Git branch" },
+            { "fvc", function() require('telescope.builtin').git_commits() end, desc = "Find Git commit" },
+            { "fvf", function() require('telescope.builtin').git_files() end, desc = "Find file tracked in Git" },
+            { "fvh", function() require('telescope.builtin').git_bcommits() end, desc = "Find buffer's Git commit (history)" },
+        })
     end
 
     -- Trouble
     if has_wk then
-        wk.register({
-            name = 'Trouble',
-            ['t'] = { function() require('trouble').toggle() end, 'Toggle Trouble' },
-            ['b'] = { function() require('telescope.builtin').buffers() end, 'Buffers' },
-            ['g'] = { function() require('telescope.builtin').live_grep() end, 'Live Grep' },
-        }, { prefix = 't' })
+        wk.add({
+            { "t", group = "Trouble" },
+            { "tb", function() require('telescope.builtin').buffers() end, desc = "Buffers" },
+            { "tg", function() require('telescope.builtin').live_grep() end, desc = "Live Grep" },
+            { "tt", function() require('trouble').toggle() end, desc = "Toggle Trouble" },
+        })
     end
     --}}}---------------------------------------------------------------------------------------------------------------
 

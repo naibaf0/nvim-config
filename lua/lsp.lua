@@ -13,13 +13,15 @@ function M.setup()
     -- Mappings. See `:help vim.diagnostic.*` for documentation on any of the below functions
     local opts = { noremap = true, silent = true }
 
-    wk.register({
-        name = 'LSP',
-        ['??'] = { function() diag.open_float() end, 'Show diagnostic under cursor' },
-        ['?j'] = { function() diag.goto_prev() end, 'Goto previous diagnostic' },
-        ['?k'] = { function() diag.goto_next() end, 'Goto next diagnostic' },
-        -- ['<leader>d'] = { function() diag.setloclist() end, 'Show all diagnostics' }
-        ['<leader>d'] = { function() require("trouble").toggle() end, 'Show all diagnostics' }
+    wk.add({
+        { "<leader>d", function() require("trouble").toggle() end, desc = "Show all diagnostics" },
+        -- { "<leader>d", function() diag.setloclist() end, desc = "Show all diagnostics" },
+    })
+    wk.add({
+        { "?", group = "LSP Diagnostics" },
+        { "??", function() diag.open_float() end, desc = "Show diagnostic under cursor" },
+        { "?j", function() diag.goto_prev() end, desc = "Goto previous diagnostic" },
+        { "?k", function() diag.goto_next() end, desc = "Goto next diagnostic" },
     })
 
     local signs = {
@@ -94,6 +96,7 @@ function M.setup()
         -- Mappings. See `:help vim.lsp.*` for documentation on any of the below functions
         local bufopts = { noremap=true, silent=true, buffer=bufnr }
 
+        -- old style whichkey
         wk.register({
             name = 'LSP',
             g = {
