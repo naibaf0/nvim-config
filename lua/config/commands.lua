@@ -1,7 +1,7 @@
 local M = { }
 
 -- local env = require('user.env')
-local utils = require('utils')
+local utils = require('config.utils')
 
 
 function M.setup()
