@@ -19,7 +19,7 @@ function M.setup()
       desc = 'highlight text after is copied',
       group = augroup,
       callback = function()
-        vim.highlight.on_yank({higroup = 'IncSearch', timeout = 300})
+        vim.hl.on_yank({higroup = 'IncSearch', timeout = 300})
       end
     })
 

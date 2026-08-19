@@ -51,7 +51,7 @@ function M.setup()
 
         -- Quick Navigation
         use {
-            'ggandor/leap.nvim',
+            url = "https://codeberg.org/andyg/leap.nvim",
             config = function() require('leap').set_default_keymaps() end
         }
 
@@ -67,8 +67,10 @@ function M.setup()
             config = function() require('Comment').setup() end
         }
         use 'skywind3000/asyncrun.vim'
-        use 'Yggdroot/indentLine'
-        use 'nmac427/guess-indent.nvim'
+        use {
+            "nmac427/guess-indent.nvim",
+            config = function() require("guess-indent").setup {} end
+        }
         use {
             "windwp/nvim-autopairs",
             config = function() require("nvim-autopairs").setup {} end
@@ -123,16 +125,10 @@ function M.setup()
         use {
             'williamboman/mason.nvim',
             'williamboman/mason-lspconfig.nvim',
-            'neovim/nvim-lspconfig',
         }
-        use {
-            'p00f/clangd_extensions.nvim',
-            requires = { 'neovim/nvim-lspconfig' }
-        }
-        use {
-            'barreiroleo/ltex-extra.nvim',
-        }
-        use { 'ray-x/lsp_signature.nvim' }
+        use 'p00f/clangd_extensions.nvim'
+        use 'barreiroleo/ltex-extra.nvim'
+        use 'ray-x/lsp_signature.nvim'
         use { 'folke/trouble.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true } }
         --}}}-----------------------------------------------------------------------------------------------------------
 

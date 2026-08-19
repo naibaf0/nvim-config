@@ -73,14 +73,6 @@ function M.setup()
         callback = function() vim.diagnostic.enable(0) end
     })
 
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = "rounded",
-    })
-
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = "rounded",
-    })
-
     -- Use an on_attach function to only map the following keys
     -- after the language server attaches to the current buffer
     local on_attach = function(client, bufnr)
@@ -94,7 +86,7 @@ function M.setup()
         end
 
         -- Mappings. See `:help vim.lsp.*` for documentation on any of the below functions
-        local bufopts = { noremap=true, silent=true, buffer=bufnr }
+        local bufopts = { noremap=true, silent=true, buffer=bufnr, border = 'rounded' }
 
         -- old style whichkey
         wk.register({
@@ -111,7 +103,8 @@ function M.setup()
             ['cf'] = { function() buf.formatting() end, 'Perform formatting (whole file)' },
         }, { prefix = '<leader>', buffer = bufnr })
 
-        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+        vim.keymap.set('n', '<C-k>', buf.signature_help, bufopts)
+        vim.keymap.set('n', 'K', buf.hover, bufopts)
     end
     --}}}---------------------------------------------------------------------------------------------------------------
 
@@ -121,14 +114,14 @@ function M.setup()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-    local lspconfig = require('lspconfig')
+    local lspconfig = vim.lsp.config
 
-    lspconfig['clangd'].setup{
+    lspconfig('clangd', {
         on_attach = on_attach,
         capabilities = capabilities
-    }
+    })
 
-    lspconfig['gopls'].setup{
+    lspconfig('gopls', {
         cmd = {"gopls", "serve"},
         settings = {
             gopls = {
@@ -140,9 +133,9 @@ function M.setup()
         },
         on_attach = on_attach,
         capabilities = capabilities
-    }
+    })
 
-    lspconfig['ltex'].setup{
+    lspconfig('ltex', {
         filetypes = { "tex", "bib", "markdown" },
         settings = {
             ltex = {
@@ -166,9 +159,9 @@ function M.setup()
             }
         end,
         capabilities = capabilities
-    }
+    })
 
-    lspconfig['pylsp'].setup{
+    lspconfig('pylsp', {
         settings = {
             pylsp = {
                 plugins = {
@@ -179,9 +172,9 @@ function M.setup()
                 }
             }
         }
-    }
+    })
 
-    lspconfig['texlab'].setup{
+    lspconfig('texlab', {
         filetypes = { "tex", "bib" },
         settings = {
           texlab = {
@@ -206,7 +199,15 @@ function M.setup()
         },
         on_attach = on_attach,
         capabilities = capabilities
-    }
+    })
+
+    lspconfig('yamlls', {
+        settings = {
+            yaml = {
+               schemas = { kubernetes = "globPattern" },
+            }
+        }
+    })
     --}}}---------------------------------------------------------------------------------------------------------------
 
 end
