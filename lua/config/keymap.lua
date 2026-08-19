@@ -1,6 +1,6 @@
 local M = { }
 
-local utils = require('utils')
+local utils = require('config.utils')
 
 function M.setup()
     local has_wk, wk = pcall(require, 'which-key')
@@ -51,8 +51,8 @@ function M.setup()
     vim.keymap.set('', '<leader>y', '"+y', { remap = false })
     vim.keymap.set('', '<leader>p', '"+p', { remap = false })
 
-    vim.keymap.set('x', '*', ':lua require("utils").search_for_visual_selection(true)<cr>', { silent = true })
-    vim.keymap.set('x', '?', ':lua require("utils").search_for_visual_selection(false)<cr>', { silent = true })
+    vim.keymap.set('x', '*', ':lua require("config.utils").search_for_visual_selection(true)<cr>', { silent = true })
+    vim.keymap.set('x', '?', ':lua require("config.utils").search_for_visual_selection(false)<cr>', { silent = true })
     --}}}---------------------------------------------------------------------------------------------------------------
 
     ----- Plugin mappings {{{-------------------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ function M.setup()
     vim.keymap.set('t', '<A-t>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
 
     -- Telescope
-    vim.keymap.set('n', '<leader>o', require('utils').project_files , { silent = true })
+    vim.keymap.set('n', '<leader>o', require('config.utils').project_files , { silent = true })
 
     if has_wk then
         wk.add({
