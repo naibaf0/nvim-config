@@ -202,20 +202,5 @@ return {
     },
     --}}}-----------------------------------------------------------------------------------------------------------
 
-    ----- nvim-lspconfig {{{----------------------------------------------------------------------------------------
-    {
-        "neovim/nvim-lspconfig",
-        event = { "BufReadPre", "BufNewFile" },
-        dependencies = {
-            "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim",
-            "hrsh7th/cmp-nvim-lsp",
-            "folke/trouble.nvim",
-            "barreiroleo/ltex-extra.nvim",
-        },
-        config = function()
-            require("config.lsp")
-        end,
-    },
     --}}}-----------------------------------------------------------------------------------------------------------
 }

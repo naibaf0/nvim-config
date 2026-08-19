@@ -133,7 +133,7 @@ vim.opt.formatoptions = 'tcrqnlj'
 
 ----- Undo configuration {{{----------------------------------------------------------------------------------------
 -- List of directory names for undo files, separated with commas.
-vim.g.undodir = os.getenv('HOME') .. '/.cache/nvim/undo'
+vim.g.undodir = vim.fn.stdpath('cache') .. '/undo'
 
 -- When on, Vim automatically saves undo history to an undo file when writing a buffer to a file, and restores undo
 -- history from the same file on buffer read.

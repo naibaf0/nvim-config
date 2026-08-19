@@ -107,17 +107,20 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-local lspconfig = require("lspconfig")
+local lspconfig = vim.lsp.conf
 
-lspconfig.clangd.setup({
+lspconfig('clangd', {
     on_attach = on_attach,
     capabilities = capabilities,
 })
 
-lspconfig.gopls.setup({
-    cmd = { "gopls", "serve" },
+lspconfig('gopls', {
+    cmd = {"gopls", "serve"},
     settings = {
         gopls = {
+            -- analysis = {
+            --     unusedparams = true,
+            -- },
             staticcheck = true,
         },
     },
@@ -125,11 +128,12 @@ lspconfig.gopls.setup({
     capabilities = capabilities,
 })
 
-lspconfig.ltex.setup({
+lspconfig('ltex', {
     filetypes = { "tex", "bib", "markdown" },
     settings = {
         ltex = {
             enabled = { "latex", "bibtex", "markdown" },
+            -- language = "en-US",
             diagnosticSeverity = "information",
             sentenceCacheSize = 2000,
             additionalRules = {
@@ -141,56 +145,63 @@ lspconfig.ltex.setup({
         },
     },
     on_attach = function(client, bufnr)
+        -- rest of your on_attach process.
         on_attach(client, bufnr)
-        require("ltex_extra").setup({
-            path = ".ltex",
-        })
+        require("ltex_extra").setup { 
+            path = ".ltex"
+        }
     end,
     capabilities = capabilities,
 })
 
-lspconfig.pylsp.setup({
+lspconfig('pylsp', {
     settings = {
         pylsp = {
             plugins = {
                 pycodestyle = {
-                    ignore = { "W391" },
-                    maxLineLength = 120,
-                },
-            },
-        },
-    },
+                    ignore = {'W391'},
+                    maxLineLength = 120
+                }
+            }
+        }
+    }
     on_attach = on_attach,
     capabilities = capabilities,
 })
 
-lspconfig.texlab.setup({
+lspconfig('texlab', {
     filetypes = { "tex", "bib" },
     settings = {
-        texlab = {
-            build = {
-                executable = "latexmk",
-                args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
-                onSave = false,
-            },
-            chktex = {
-                onOpenAndSave = true,
-                onEdit = true,
-            },
-            bibtexFormatter = "texlab",
-            formatterLineLength = 120,
+      texlab = {
+        -- rootDirectory = ".",
+        build = {
+          executable = "latexmk",
+          args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+          onSave = false,
+          -- forwardSearchAfter = true,
         },
+        -- forwardSearch = {
+        --   executable = "zathura",
+        --   args = { "--synctex-forward", "%l:1:%f", "%p" },
+        -- },
+        chktex = {
+            onOpenAndSave = true,
+            onEdit = true,
+        },
+        bibtexFormatter = 'texlab',
+        formatterLineLength = 120,
+      }
     },
     on_attach = on_attach,
     capabilities = capabilities,
 })
 
-lspconfig.yamlls.setup({
+lspconfig('yamlls', {
     settings = {
         yaml = {
-            schemas = { kubernetes = "globPattern" },
-        },
-    },
+           schemas = { kubernetes = "globPattern" },
+        }
+    }
     on_attach = on_attach,
     capabilities = capabilities,
 })

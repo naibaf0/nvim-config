@@ -36,7 +36,7 @@ require("lazy").setup("plugins", {
         lazy = false, -- plugins are not lazy-loaded by default
     },
     install = {
-        colorscheme = { "catppuccin" },
+        colorscheme = { "catppuccin-nvim" },
     },
     checker = {
         enabled = true, -- automatically check for plugin updates

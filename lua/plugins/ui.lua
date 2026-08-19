@@ -51,12 +51,15 @@ return {
 
             require("lualine").setup({
                 options = {
-                    theme = "catppuccin",
+                    theme = "catppuccin-nvim",
                 },
                 extensions = {
                     "fugitive",
                     "fzf",
+                    "lazy",
+                    "mason",
                     "nvim-tree",
+                    "trouble",
                 },
                 sections = {
                     lualine_b = {
