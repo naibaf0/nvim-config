@@ -1,6 +1,13 @@
 -- Git integration: gitsigns, fugitive
+--
+-- LAZY STRATEGY:
+-- - gitsigns: YES (BufReadPre) - Only needed when viewing files with git history,
+--   not when opening nvim without arguments
+-- - fugitive: YES (cmd/event) - Git commands only needed when actively using git,
+--   lazy-load on first git command or file open
+
 return {
-    -- Git signs in gutter
+    ----- Gitsigns {{{----------------------------------------------------------------------------------------------
     {
         "lewis6991/gitsigns.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },
@@ -60,11 +67,13 @@ return {
             })
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Git commands
+    ----- Fugitive {{{----------------------------------------------------------------------------------------------
     {
         "tpope/vim-fugitive",
         cmd = { "Git", "G", "Gdiffsplit", "Gread", "Gwrite", "Ggrep", "GMove", "GDelete", "GBrowse" },
         event = { "BufReadPre", "BufNewFile" },
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 }

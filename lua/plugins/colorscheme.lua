@@ -1,9 +1,15 @@
 -- Catppuccin Colorscheme
+--
+-- LAZY: NO - Colorscheme must load immediately at startup to avoid
+-- visual flash/flicker. The `priority = 1000` ensures it loads before
+-- any other plugin that might depend on highlight groups.
+
 return {
+    ----- Catppuccin {{{--------------------------------------------------------------------------------------------
     {
         "catppuccin/nvim",
         name = "catppuccin",
-        priority = 1000, -- Load before other plugins
+        priority = 1000,
         lazy = false,
         config = function()
             require("catppuccin").setup({
@@ -31,4 +37,5 @@ return {
             vim.cmd.colorscheme("catppuccin")
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 }

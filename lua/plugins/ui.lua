@@ -1,14 +1,22 @@
 -- UI plugins: lualine, tabline, devicons
+--
+-- LAZY STRATEGY:
+-- - devicons: YES (lazy=true) - Only loaded as dependency when needed
+-- - tabline: NO - Must be visible immediately on startup
+-- - lualine: NO - Statusline must be visible immediately on startup
+
 return {
-    -- File icons
+    ----- nvim-web-devicons (loaded as dependency) {{{--------------------------------------------------------------
     {
         "nvim-tree/nvim-web-devicons",
         lazy = true,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Tabline
+    ----- Tabline {{{-----------------------------------------------------------------------------------------------
     {
         "kdheepak/tabline.nvim",
+        lazy = false,
         dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
             require("tabline").setup({
@@ -19,10 +27,12 @@ return {
             })
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Status line
+    ----- Lualine {{{-----------------------------------------------------------------------------------------------
     {
         "nvim-lualine/lualine.nvim",
+        lazy = false,
         dependencies = {
             "nvim-tree/nvim-web-devicons",
             "kdheepak/tabline.nvim",
@@ -66,4 +76,5 @@ return {
             })
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 }

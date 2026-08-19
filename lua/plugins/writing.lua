@@ -1,6 +1,17 @@
 -- Writing and documentation plugins: goyo, limelight, vimtex, markdown
+--
+-- LAZY STRATEGY:
+-- - goyo/limelight: YES (cmd/keys) - Zen mode only when explicitly invoked
+-- - vimtex: YES (ft) - LaTeX-specific, only for .tex/.bib files
+-- - vim-markdown: YES (ft) - Markdown-specific
+-- - tabular: YES (cmd) - Text alignment only when invoked
+-- - markdown-composer: YES (ft) - Markdown preview only for .md files
+-- - vim-json: YES (ft) - JSON-specific
+-- - vim-yaml-folds: YES (ft) - YAML-specific
+-- - viewdoc: YES (cmd) - Documentation viewer only when invoked
+
 return {
-    -- Distraction-free writing
+    ----- Goyo {{{--------------------------------------------------------------------------------------------------
     {
         "junegunn/goyo.vim",
         cmd = "Goyo",
@@ -33,14 +44,16 @@ return {
             autocmd("User", { pattern = "GoyoLeave", group = goyogroup, callback = leave })
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Focus on current paragraph
+    ----- Limelight {{{---------------------------------------------------------------------------------------------
     {
         "junegunn/limelight.vim",
         cmd = "Limelight",
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- LaTeX editing
+    ----- VimTeX {{{------------------------------------------------------------------------------------------------
     {
         "lervag/vimtex",
         ft = { "tex", "bib" },
@@ -56,8 +69,9 @@ return {
             vim.g.tex_conceal = "abdmg"
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Markdown support
+    ----- vim-markdown {{{------------------------------------------------------------------------------------------
     {
         "plasticboy/vim-markdown",
         ft = { "markdown" },
@@ -72,14 +86,16 @@ return {
             vim.g.vim_markdown_new_list_item_indent = 1
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Text alignment
+    ----- Tabular {{{-----------------------------------------------------------------------------------------------
     {
         "godlygeek/tabular",
         cmd = "Tabularize",
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Markdown preview
+    ----- vim-markdown-composer {{{---------------------------------------------------------------------------------
     {
         "euclio/vim-markdown-composer",
         ft = { "markdown" },
@@ -88,20 +104,23 @@ return {
             vim.g.markdown_composer_autostart = 0
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- JSON support
+    ----- vim-json {{{----------------------------------------------------------------------------------------------
     {
         "elzr/vim-json",
         ft = { "json" },
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- YAML folding
+    ----- vim-yaml-folds {{{----------------------------------------------------------------------------------------
     {
         "pedrohdz/vim-yaml-folds",
         ft = { "yaml" },
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Documentation viewer
+    ----- ViewDoc {{{-----------------------------------------------------------------------------------------------
     {
         "powerman/vim-plugin-viewdoc",
         cmd = { "ViewDoc", "ViewDocHelp" },
@@ -110,4 +129,5 @@ return {
             vim.g.viewdoc_copy_to_search_reg = true
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 }

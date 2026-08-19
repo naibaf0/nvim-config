@@ -1,6 +1,18 @@
--- LSP, completion, and related plugins
+-- Completion, snippets, and LSP plugins
+--
+-- LAZY STRATEGY:
+-- - mason: YES (cmd) - Package manager UI only when running :Mason
+-- - mason-lspconfig: Loaded as dependency of lspconfig
+-- - LuaSnip: Loaded as dependency of nvim-cmp
+-- - nvim-cmp: YES (InsertEnter) - Completion only needed in insert mode
+-- - lsp_signature: YES (LspAttach) - Only after LSP connects to buffer
+-- - clangd_extensions: YES (ft) - Only for C/C++ files
+-- - ltex-extra: YES (ft) - Only for tex/markdown files
+-- - trouble: YES (cmd/keys) - Diagnostics panel only when invoked
+-- - lspconfig: YES (BufReadPre) - LSP only when opening files
+
 return {
-    -- Mason: LSP/DAP/Linter installer
+    ----- Mason {{{-------------------------------------------------------------------------------------------------
     {
         "williamboman/mason.nvim",
         cmd = "Mason",
@@ -17,19 +29,23 @@ return {
             })
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Mason-lspconfig bridge
+    ----- Mason-lspconfig {{{---------------------------------------------------------------------------------------
     {
         "williamboman/mason-lspconfig.nvim",
+        lazy = true,
         dependencies = { "williamboman/mason.nvim" },
         config = function()
             require("mason-lspconfig").setup()
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Snippet engine
+    ----- LuaSnip {{{-----------------------------------------------------------------------------------------------
     {
         "L3MON4D3/LuaSnip",
+        lazy = true,
         dependencies = {
             "rafamadriz/friendly-snippets",
         },
@@ -37,8 +53,9 @@ return {
             require("luasnip.loaders.from_vscode").lazy_load()
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Completion
+    ----- nvim-cmp {{{----------------------------------------------------------------------------------------------
     {
         "hrsh7th/nvim-cmp",
         event = "InsertEnter",
@@ -119,8 +136,9 @@ return {
             })
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- LSP signature help
+    ----- lsp_signature {{{-----------------------------------------------------------------------------------------
     {
         "ray-x/lsp_signature.nvim",
         event = "LspAttach",
@@ -153,20 +171,23 @@ return {
             })
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Clangd extensions
+    ----- clangd_extensions {{{-------------------------------------------------------------------------------------
     {
         "p00f/clangd_extensions.nvim",
         ft = { "c", "cpp" },
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- LTeX extra (grammar checking)
+    ----- ltex-extra {{{--------------------------------------------------------------------------------------------
     {
         "barreiroleo/ltex-extra.nvim",
         ft = { "tex", "bib", "markdown" },
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Trouble: diagnostics list
+    ----- Trouble {{{-----------------------------------------------------------------------------------------------
     {
         "folke/trouble.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -179,8 +200,9 @@ return {
             require("trouble").setup()
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- LSP configuration (loaded after all LSP-related plugins)
+    ----- nvim-lspconfig {{{----------------------------------------------------------------------------------------
     {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
@@ -195,4 +217,5 @@ return {
             require("config.lsp").setup()
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 }

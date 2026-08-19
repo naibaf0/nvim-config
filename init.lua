@@ -10,10 +10,7 @@
 -- make       - https://www.gnu.org/software/make/
 -- c compiler - gcc or tcc or zig
 
--- ========================================================================== --
--- ==                         LAZY.NVIM BOOTSTRAP                          == --
--- ========================================================================== --
-
+----- Lazy.nvim Bootstrap {{{-----------------------------------------------------------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
@@ -26,24 +23,14 @@ if not vim.loop.fs_stat(lazypath) then
     })
 end
 vim.opt.rtp:prepend(lazypath)
+--}}}-----------------------------------------------------------------------------------------------------------
 
--- ========================================================================== --
--- ==                           CONFIGURATION                              == --
--- ========================================================================== --
-
--- Basic editor options (must be loaded before lazy for leader key)
+----- Pre-Plugin Configuration {{{------------------------------------------------------------------------------
+-- Basic editor options MUST load first (sets leader key before lazy.nvim)
 require("config.settings").setup()
+--}}}-----------------------------------------------------------------------------------------------------------
 
--- Keybindings
-require("config.keymap").setup()
-
--- User defined commands
-require("config.commands").setup()
-
--- ========================================================================== --
--- ==                              PLUGINS                                 == --
--- ========================================================================== --
-
+----- Plugin Setup {{{------------------------------------------------------------------------------------------
 require("lazy").setup("plugins", {
     defaults = {
         lazy = false, -- plugins are not lazy-loaded by default
@@ -70,11 +57,17 @@ require("lazy").setup("plugins", {
         },
     },
 })
+--}}}-----------------------------------------------------------------------------------------------------------
 
--- ========================================================================== --
--- ==                         PROJECT CONFIG                               == --
--- ========================================================================== --
+----- Post-Plugin Configuration {{{-----------------------------------------------------------------------------
+-- Keybindings (loaded after plugins so plugin commands are available)
+require("config.keymap").setup()
 
+-- User defined commands (loaded after plugins for plugin integration)
+require("config.commands").setup()
+--}}}-----------------------------------------------------------------------------------------------------------
+
+----- Project Configuration {{{---------------------------------------------------------------------------------
 local function load_project_config()
     if vim.fn.filereadable(".project.lua") == 1 then
         vim.cmd([[luafile .project.lua]])
@@ -91,3 +84,4 @@ vim.api.nvim_create_autocmd("DirChanged", {
 })
 
 load_project_config()
+--}}}-----------------------------------------------------------------------------------------------------------

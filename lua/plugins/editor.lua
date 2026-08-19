@@ -1,6 +1,18 @@
 -- Editor enhancements: commenting, autopairs, surround, leap, etc.
+--
+-- LAZY STRATEGY:
+-- - leap: YES (keys) - Motion plugin only when using s/S keys
+-- - Comment: YES (keys) - Only when using comment keybindings
+-- - autopairs: YES (InsertEnter) - Only needed in insert mode
+-- - guess-indent: YES (BufReadPre) - Only when opening files
+-- - surround: NO - Needs immediate availability for text object motions
+-- - repeat: NO - Extends . command, must be ready immediately
+-- - ctrlp: YES (cmd) - Legacy finder, only when invoked
+-- - gutentags: YES (BufReadPre) - Tags only when opening files
+-- - asyncrun: YES (cmd) - Only when running async commands
+
 return {
-    -- Quick navigation
+    ----- Leap {{{--------------------------------------------------------------------------------------------------
     {
         "ggandor/leap.nvim",
         url = "https://codeberg.org/andyg/leap.nvim",
@@ -12,8 +24,9 @@ return {
             require("leap").set_default_keymaps()
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Commenting
+    ----- Comment {{{-----------------------------------------------------------------------------------------------
     {
         "numToStr/Comment.nvim",
         keys = {
@@ -24,8 +37,9 @@ return {
             require("Comment").setup()
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Auto pairs
+    ----- nvim-autopairs {{{----------------------------------------------------------------------------------------
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
@@ -33,8 +47,9 @@ return {
             require("nvim-autopairs").setup({})
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Guess indentation
+    ----- guess-indent {{{------------------------------------------------------------------------------------------
     {
         "nmac427/guess-indent.nvim",
         event = { "BufReadPre", "BufNewFile" },
@@ -42,20 +57,23 @@ return {
             require("guess-indent").setup({})
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Surround
+    ----- vim-surround {{{------------------------------------------------------------------------------------------
     {
         "tpope/vim-surround",
-        event = { "BufReadPre", "BufNewFile" },
+        lazy = false,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Repeat plugin commands with .
+    ----- vim-repeat {{{--------------------------------------------------------------------------------------------
     {
         "tpope/vim-repeat",
-        event = { "BufReadPre", "BufNewFile" },
+        lazy = false,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- CtrlP (legacy fuzzy finder, keeping for compatibility)
+    ----- CtrlP {{{-------------------------------------------------------------------------------------------------
     {
         "ctrlpvim/ctrlp.vim",
         cmd = { "CtrlP", "CtrlPBuffer", "CtrlPMRU" },
@@ -70,8 +88,9 @@ return {
             vim.g.ctrlp_cache_dir = os.getenv("HOME") .. "/.cache/ctrlp"
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Gutentags (automatic ctags)
+    ----- Gutentags {{{---------------------------------------------------------------------------------------------
     {
         "ludovicchabant/vim-gutentags",
         event = { "BufReadPre", "BufNewFile" },
@@ -93,10 +112,12 @@ return {
             }
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Async commands
+    ----- AsyncRun {{{----------------------------------------------------------------------------------------------
     {
         "skywind3000/asyncrun.vim",
         cmd = { "AsyncRun", "AsyncStop" },
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 }

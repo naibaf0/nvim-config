@@ -1,12 +1,22 @@
 -- Utility plugins: which-key, fterm, undotree, nvim-tree, session-manager
+--
+-- LAZY STRATEGY:
+-- - plenary: YES (lazy=true) - Utility library, loaded as dependency
+-- - which-key: YES (VeryLazy) - Keybinding help can defer slightly after startup
+-- - FTerm: YES (keys) - Floating terminal only when toggled
+-- - undotree: YES (keys) - Undo visualizer only when invoked
+-- - nvim-tree: YES (cmd/keys) - File explorer only when toggled
+-- - session-manager: YES (cmd/keys) - Session commands only when invoked
+
 return {
-    -- Plenary (lua utilities, dependency for many plugins)
+    ----- Plenary {{{-----------------------------------------------------------------------------------------------
     {
         "nvim-lua/plenary.nvim",
         lazy = true,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Keybinding help/preview
+    ----- which-key {{{---------------------------------------------------------------------------------------------
     {
         "folke/which-key.nvim",
         event = "VeryLazy",
@@ -14,8 +24,9 @@ return {
             require("which-key").setup()
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Floating terminal
+    ----- FTerm {{{-------------------------------------------------------------------------------------------------
     {
         "numToStr/FTerm.nvim",
         keys = {
@@ -32,8 +43,9 @@ return {
             })
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Undo tree visualizer
+    ----- Undotree {{{----------------------------------------------------------------------------------------------
     {
         "jiaoshijie/undotree",
         dependencies = { "nvim-lua/plenary.nvim" },
@@ -42,8 +54,9 @@ return {
         },
         config = true,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- File explorer
+    ----- nvim-tree {{{---------------------------------------------------------------------------------------------
     {
         "nvim-tree/nvim-tree.lua",
         dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -55,8 +68,9 @@ return {
             require("nvim-tree").setup()
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 
-    -- Session manager
+    ----- Session Manager {{{---------------------------------------------------------------------------------------
     {
         "Shatur/neovim-session-manager",
         dependencies = { "nvim-lua/plenary.nvim" },
@@ -82,4 +96,5 @@ return {
             })
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 }

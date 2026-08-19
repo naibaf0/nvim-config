@@ -1,5 +1,11 @@
 -- Treesitter syntax highlighting and parsing
+--
+-- LAZY: YES (BufReadPost/BufNewFile) - Treesitter is only needed when
+-- actually viewing file content. No need to load on empty nvim startup.
+-- Using BufReadPost (after file is read) to ensure file content exists.
+
 return {
+    ----- Treesitter {{{--------------------------------------------------------------------------------------------
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
@@ -72,4 +78,5 @@ return {
             })
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 }

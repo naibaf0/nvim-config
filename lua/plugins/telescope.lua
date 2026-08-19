@@ -1,5 +1,11 @@
 -- Telescope fuzzy finder
+--
+-- LAZY: YES (cmd/keys) - Telescope is only needed when you invoke it.
+-- Loading on startup would be wasteful since it's a heavy plugin with
+-- multiple extensions. Lazy-load on first Telescope command or keymap.
+
 return {
+    ----- Telescope {{{---------------------------------------------------------------------------------------------
     {
         "nvim-telescope/telescope.nvim",
         branch = "0.1.x",
@@ -58,4 +64,5 @@ return {
             telescope.load_extension("ui-select")
         end,
     },
+    --}}}-----------------------------------------------------------------------------------------------------------
 }
