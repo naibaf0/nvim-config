@@ -35,7 +35,7 @@ function M.setup()
             config = function() require'nvim-tree'.setup() end,
         }
         -- Undotree
-        use 'simnalamburt/vim-mundo'
+        use 'jiaoshijie/undotree'
         -- Session Manager
         use { 'Shatur/neovim-session-manager', requires = { 'nvim-lua/plenary.nvim' } }
         -- Keybinding preview/help

@@ -68,7 +68,7 @@ function M.setup()
     -- Toggle FileTree
     vim.keymap.set('n', '<F6>', ':NvimTreeToggle<CR>', { silent = true })
     -- Toggle Undotree
-    vim.keymap.set('n', '<F7>', ':MundoToggle<CR>', { silent = true })
+    vim.keymap.set('n', '<F7>', require('undotree').toggle, { silent = true })
     -- Toggle Goyo Mode
     vim.keymap.set('n', '<leader>w', ':Goyo<CR>', { silent = true })
 
@@ -77,7 +77,7 @@ function M.setup()
     vim.keymap.set('t', '<A-t>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
 
     -- Telescope
-    vim.keymap.set('n', '<leader>o',':lua require("utils").project_files()<cr>' , { silent = true })
+    vim.keymap.set('n', '<leader>o', require('utils').project_files , { silent = true })
 
     if has_wk then
         wk.add({

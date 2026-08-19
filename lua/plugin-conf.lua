@@ -25,7 +25,7 @@ function M.setup()
             which_key = true
         },
     })
-    vim.cmd.colorscheme "catppuccin"
+    vim.cmd.colorscheme "catppuccin-nvim"
     --}}}---------------------------------------------------------------------------------------------------------------
 
     ----- Lualine & Tabline {{{-----------------------------------------------------------------------------------------
@@ -49,10 +49,10 @@ function M.setup()
 
     require('lualine').setup {
         options = {
-            theme = "catppuccin"
+            theme = "catppuccin-nvim"
         },
         extensions = {
-            'fugitive', 'fzf', 'nvim-tree', 'mundo',-- 'quickfix',
+            'fugitive', 'fzf', 'nvim-tree', --'mundo',-- 'quickfix',
         },
         sections = {
             lualine_b = { {'b:gitsigns_head', icon = ''}, {'diff', source = diff_source}, diagnostics },

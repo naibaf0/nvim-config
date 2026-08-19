@@ -63,14 +63,14 @@ function M.setup()
         group = group,
         pattern = {'n:i', 'v:s'},
         desc = 'Disable diagnostics while typing',
-        callback = function() vim.diagnostic.disable(0) end
+        callback = function() vim.diagnostic.enable(false) end
     })
 
     autocmd('ModeChanged', {
         group = group,
         pattern = 'i:n',
         desc = 'Enable diagnostics when leaving insert mode',
-        callback = function() vim.diagnostic.enable(0) end
+        callback = function() vim.diagnostic.enable(true) end
     })
 
     -- Use an on_attach function to only map the following keys
