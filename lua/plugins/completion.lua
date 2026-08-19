@@ -214,7 +214,7 @@ return {
             "barreiroleo/ltex-extra.nvim",
         },
         config = function()
-            require("config.lsp").setup()
+            require("config.lsp")
         end,
     },
     --}}}-----------------------------------------------------------------------------------------------------------

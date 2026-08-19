@@ -12,7 +12,7 @@
 
 ----- Lazy.nvim Bootstrap {{{-----------------------------------------------------------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
         "git",
         "clone",
@@ -27,7 +27,7 @@ vim.opt.rtp:prepend(lazypath)
 
 ----- Pre-Plugin Configuration {{{------------------------------------------------------------------------------
 -- Basic editor options MUST load first (sets leader key before lazy.nvim)
-require("config.settings").setup()
+require("config.settings")
 --}}}-----------------------------------------------------------------------------------------------------------
 
 ----- Plugin Setup {{{------------------------------------------------------------------------------------------
@@ -61,10 +61,10 @@ require("lazy").setup("plugins", {
 
 ----- Post-Plugin Configuration {{{-----------------------------------------------------------------------------
 -- Keybindings (loaded after plugins so plugin commands are available)
-require("config.keymap").setup()
+require("config.keymap")
 
 -- User defined commands (loaded after plugins for plugin integration)
-require("config.commands").setup()
+require("config.commands")
 --}}}-----------------------------------------------------------------------------------------------------------
 
 ----- Project Configuration {{{---------------------------------------------------------------------------------
