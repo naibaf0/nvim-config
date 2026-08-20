@@ -5,13 +5,14 @@
 --
 -- INTEGRATIONS:
 -- - nvim-cmp: Completion source for editor context, slash commands, tools
--- - telescope: Action palette provider (optional)
+-- - telescope: Action palette provider
 -- - treesitter: Required for markdown prompts in prompt library
 -- - plenary: Required dependency
 --
--- PROVIDERS (free options):
--- - ollama: Local models (requires ollama installed)
--- - copilot: If you have GitHub Copilot subscription (reuses auth)
+-- ADAPTERS:
+-- - opencode (ACP): Default - requires opencode CLI installed and configured
+-- - mistral: HTTP adapter - requires MISTRAL_API_KEY env var
+-- - ollama: Local models - requires ollama installed and running
 
 return {
     ----- CodeCompanion {{{-----------------------------------------------------------------------------------------
@@ -35,64 +36,74 @@ return {
         config = function()
             require("codecompanion").setup({
                 ----- Interactions {{{----------------------------------------------------------------------------------
-                -- Configure which adapter to use for each interaction type
                 interactions = {
-                    -- Chat buffer interaction
+                    -- Chat buffer interaction (uses ACP adapter)
                     chat = {
-                        adapter = "ollama",  -- Change to your preferred adapter
-                        -- Or specify adapter with model:
-                        -- adapter = {
-                        --     name = "ollama",
-                        --     model = "llama3.2",
-                        -- },
+                        adapter = {
+                            name = "opencode",
+                            model = "",  -- TODO: Fill in your preferred model
+                        },
                     },
-                    -- Inline code interaction
+                    -- Inline code interaction (uses HTTP adapter as fallback)
                     inline = {
-                        adapter = "ollama",
+                        adapter = "mistral",
                     },
                     -- Command generation
                     cmd = {
-                        adapter = "ollama",
+                        adapter = "mistral",
                     },
                 },
                 --}}}---------------------------------------------------------------------------------------------------
 
                 ----- Adapters {{{--------------------------------------------------------------------------------------
                 adapters = {
-                    -- Ollama (local, free)
-                    -- Requires: ollama installed and running (https://ollama.ai)
-                    -- Run: ollama pull llama3.2 (or your preferred model)
-                    ollama = function()
-                        return require("codecompanion.adapters").extend("ollama", {
-                            schema = {
-                                model = {
-                                    default = "llama3.2",
+                    ----- ACP Adapters {{{------------------------------------------------------------------------------
+                    -- OpenCode (ACP) - Default
+                    -- Requires: opencode CLI installed and configured
+                    -- Install: https://opencode.ai/docs/#install
+                    -- Configure: https://opencode.ai/docs/#configure
+                    -- Model can also be set in ~/.config/opencode/config.json
+                    acp = {
+                        opencode = function()
+                            return require("codecompanion.adapters").extend("opencode", {
+                                defaults = {
+                                    session_config_options = {
+                                        model = "",  -- TODO: Fill in your preferred model
+                                    },
                                 },
-                            },
-                        })
-                    end,
+                            })
+                        end,
+                    },
+                    --}}}-----------------------------------------------------------------------------------------------
 
-                    -- Anthropic (requires ANTHROPIC_API_KEY env var)
-                    -- anthropic = function()
-                    --     return require("codecompanion.adapters").extend("anthropic", {
-                    --         schema = {
-                    --             model = {
-                    --                 default = "claude-sonnet-4-20250514",
-                    --             },
-                    --         },
-                    --     })
-                    -- end,
+                    ----- HTTP Adapters {{{-----------------------------------------------------------------------------
+                    http = {
+                        -- Mistral
+                        -- Requires: MISTRAL_API_KEY env var
+                        mistral = function()
+                            return require("codecompanion.adapters").extend("mistral", {
+                                schema = {
+                                    model = {
+                                        default = "mistral-large-latest",
+                                    },
+                                },
+                            })
+                        end,
 
-                    -- OpenAI (requires OPENAI_API_KEY env var)
-                    -- openai = function()
-                    --     return require("codecompanion.adapters").extend("openai", {
-                    --         schema = {
-                    --             model = {
-                    --                 default = "gpt-4o",
-                    --             },
-                    --         },
-                    --     })
-                    -- end,
+                        -- Ollama (local)
+                        -- Requires: ollama installed and running (https://ollama.ai)
+                        -- Run: ollama pull llama3.2 (or your preferred model)
+                        ollama = function()
+                            return require("codecompanion.adapters").extend("ollama", {
+                                schema = {
+                                    model = {
+                                        default = "llama3.2",
+                                    },
+                                },
+                            })
+                        end,
+                    },
+                    --}}}-----------------------------------------------------------------------------------------------
                 },
                 --}}}---------------------------------------------------------------------------------------------------
 
@@ -100,12 +111,9 @@ return {
                 display = {
                     action_palette = {
                         provider = "telescope",  -- Uses your existing telescope setup
-                        -- provider = "default",  -- Use vim.ui.select instead
                     },
                     chat = {
-                        -- Show token count in chat buffer
                         show_token_count = true,
-                        -- Render markdown in chat (integrates with render-markdown.nvim if installed)
                         render_headers = true,
                     },
                     diff = {
