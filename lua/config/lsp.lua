@@ -1,14 +1,18 @@
-local wk = require("which-key")
+local wk = require('which-key')
 local diag = vim.diagnostic
 local buf = vim.lsp.buf
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
+local command = vim.api.nvim_create_user_command
 
 ----- Key bindings {{{----------------------------------------------------------------------------------------------
 
 -- Mappings. See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap = true, silent = true }
+
 wk.add({
     { "<leader>d", function() require("trouble").toggle() end, desc = "Show all diagnostics" },
+    -- { "<leader>d", function() diag.setloclist() end, desc = "Show all diagnostics" },
 })
 wk.add({
     { "?", group = "LSP Diagnostics" },
@@ -44,60 +48,72 @@ local config = {
 
 diag.config(config)
 
-local group = augroup("diagnostic_cmds", { clear = true })
+local group = augroup('diagnostic_cmds', {clear = true})
 
-autocmd("ModeChanged", {
+autocmd('ModeChanged', {
     group = group,
-    pattern = { "n:i", "v:s" },
-    desc = "Disable diagnostics while typing",
-    callback = function()
-        diag.enable(false)
-    end,
+    pattern = {'n:i', 'v:s'},
+    desc = 'Disable diagnostics while typing',
+    callback = function() diag.enable(false) end
 })
 
-autocmd("ModeChanged", {
+autocmd('ModeChanged', {
     group = group,
-    pattern = "i:n",
-    desc = "Enable diagnostics when leaving insert mode",
-    callback = function()
-        diag.enable(true)
-    end,
+    pattern = 'i:n',
+    desc = 'Enable diagnostics when leaving insert mode',
+    callback = function() diag.enable(true) end
 })
 
 --}}}---------------------------------------------------------------------------------------------------------------
 
------ on_attach {{{-------------------------------------------------------------------------------------------------
+----- LspAttach Autocmd {{{-----------------------------------------------------------------------------------------
 
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-    if client.server_capabilities.goto_definition == true then
-        vim.bo[bufnr].tagfunc = "v:lua.vim.lsp.tagfunc"
-    end
+autocmd("LspAttach", {
+    group = augroup("lsp_attach", { clear = true }),
+    desc = "LSP keymaps and buffer settings",
+    callback = function(args)
+        local bufnr = args.buf
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-    if client.server_capabilities.document_formatting == true then
-        vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr()"
-    end
+        if not client then
+            return
+        end
 
-    -- Mappings. See `:help vim.lsp.*` for documentation on any of the below functions
-    local bufopts = { noremap = true, silent = true, buffer = bufnr }
+        if client.server_capabilities.definitionProvider then
+            vim.bo[bufnr].tagfunc = "v:lua.vim.lsp.tagfunc"
+        end
 
-    -- LSP keymaps using new which-key API
-    wk.add({
-        { "<leader>g", group = "LSP Goto", buffer = bufnr },
-        { "<leader>gd", function() buf.declaration() end, desc = "Goto declaration", buffer = bufnr },
-        { "<leader>gD", function() buf.definition() end, desc = "Goto definition", buffer = bufnr },
-        { "<leader>gi", function() buf.implementation() end, desc = "Goto implementation", buffer = bufnr },
-        { "<leader>gt", function() buf.type_definition() end, desc = "Goto type definition", buffer = bufnr },
-        { "<leader>k", function() buf.hover() end, desc = "Tooltip for item under cursor", buffer = bufnr },
-        { "<leader>rn", function() buf.rename() end, desc = "Refactor rename", buffer = bufnr },
-        { "<leader>ca", function() buf.code_action() end, desc = "Code action", buffer = bufnr },
-        { "<leader>cf", function() buf.format() end, desc = "Format file", buffer = bufnr },
-    })
+        if client.server_capabilities.documentFormattingProvider then
+            vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr()"
+        end
 
-    vim.keymap.set("n", "<C-k>", buf.signature_help, bufopts)
-    vim.keymap.set("n", "K", buf.hover, bufopts)
-end
+        -- Mappings. See `:help vim.lsp.*` for documentation on any of the below functions
+        local bufopts = { noremap=true, silent=true, buffer=bufnr, border = 'rounded' }
+
+        -- LSP keymaps using which-key
+        wk.add({
+            { "<leader>g", group = "LSP Goto", buffer = bufnr },
+            { "<leader>gd", function() buf.declaration() end, desc = "Goto declaration", buffer = bufnr },
+            { "<leader>gD", function() buf.definition() end, desc = "Goto definition", buffer = bufnr },
+            { "<leader>gi", function() buf.implementation() end, desc = "Goto implementation", buffer = bufnr },
+            { "<leader>gt", function() buf.type_definition() end, desc = "Goto type definition", buffer = bufnr },
+            { "<leader>k", function() buf.hover() end, desc = "Tooltip for item under cursor", buffer = bufnr },
+            { "<leader>rn", function() buf.rename() end, desc = "Refactor rename item under cursor", buffer = bufnr },
+            { "<leader>ca", function() buf.code_action() end, desc = "Perform code action for item under cursor", buffer = bufnr },
+            { "<leader>cf", function() buf.format() end, desc = "Perform formatting (whole file)", buffer = bufnr },
+        })
+
+        vim.keymap.set('n', '<C-k>', buf.signature_help, bufopts)
+        vim.keymap.set('n', 'K', buf.hover, bufopts)
+
+        -- ltex-extra setup (only for ltex server)
+        if client.name == "ltex" then
+            require("ltex_extra").setup {
+                path = ".ltex"
+            }
+        end
+    end,
+})
 
 --}}}---------------------------------------------------------------------------------------------------------------
 
@@ -105,13 +121,12 @@ end
 
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-local lspconfig = vim.lsp.conf
+local lspconfig = vim.lsp.config
 
 lspconfig('clangd', {
-    on_attach = on_attach,
-    capabilities = capabilities,
+    capabilities = capabilities
 })
 
 lspconfig('gopls', {
@@ -124,8 +139,7 @@ lspconfig('gopls', {
             staticcheck = true,
         },
     },
-    on_attach = on_attach,
-    capabilities = capabilities,
+    capabilities = capabilities
 })
 
 lspconfig('ltex', {
@@ -144,14 +158,7 @@ lspconfig('ltex', {
             disabledRules = {},
         },
     },
-    on_attach = function(client, bufnr)
-        -- rest of your on_attach process.
-        on_attach(client, bufnr)
-        require("ltex_extra").setup { 
-            path = ".ltex"
-        }
-    end,
-    capabilities = capabilities,
+    capabilities = capabilities
 })
 
 lspconfig('pylsp', {
@@ -164,9 +171,8 @@ lspconfig('pylsp', {
                 }
             }
         }
-    }
-    on_attach = on_attach,
-    capabilities = capabilities,
+    },
+    capabilities = capabilities
 })
 
 lspconfig('texlab', {
@@ -192,8 +198,7 @@ lspconfig('texlab', {
         formatterLineLength = 120,
       }
     },
-    on_attach = on_attach,
-    capabilities = capabilities,
+    capabilities = capabilities
 })
 
 lspconfig('yamlls', {
@@ -201,9 +206,21 @@ lspconfig('yamlls', {
         yaml = {
            schemas = { kubernetes = "globPattern" },
         }
-    }
-    on_attach = on_attach,
-    capabilities = capabilities,
+    },
+    capabilities = capabilities
+})
+
+--}}}---------------------------------------------------------------------------------------------------------------
+
+----- Enable LSP Servers {{{----------------------------------------------------------------------------------------
+
+vim.lsp.enable({
+    "clangd",
+    "gopls",
+    "ltex",
+    "pylsp",
+    "texlab",
+    "yamlls",
 })
 
 --}}}---------------------------------------------------------------------------------------------------------------
