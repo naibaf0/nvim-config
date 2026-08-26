@@ -7,7 +7,6 @@
 -- - guess-indent: YES (BufReadPre) - Only when opening files
 -- - surround: NO - Needs immediate availability for text object motions
 -- - repeat: NO - Extends . command, must be ready immediately
--- - ctrlp: YES (cmd) - Legacy finder, only when invoked
 -- - gutentags: YES (BufReadPre) - Tags only when opening files
 -- - asyncrun: YES (cmd) - Only when running async commands
 
@@ -70,23 +69,6 @@ return {
     {
         "tpope/vim-repeat",
         lazy = false,
-    },
-    --}}}-----------------------------------------------------------------------------------------------------------
-
-    ----- CtrlP {{{-------------------------------------------------------------------------------------------------
-    {
-        "ctrlpvim/ctrlp.vim",
-        cmd = { "CtrlP", "CtrlPBuffer", "CtrlPMRU" },
-        init = function()
-            if vim.fn.executable("ag") == 1 then
-                vim.g.ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-            end
-            vim.g.ctrlp_custom_ignore = {
-                dir = "\\v[\\/]\\.(git|hg|svn)$|build",
-                file = "\\v\\.(exe|so|dll|a)$",
-            }
-            vim.g.ctrlp_cache_dir = os.getenv("HOME") .. "/.cache/ctrlp"
-        end,
     },
     --}}}-----------------------------------------------------------------------------------------------------------
 
